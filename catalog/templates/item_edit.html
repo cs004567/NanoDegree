@@ -1,0 +1,44 @@
+{% extends "site.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+<br>
+<h2>Edit item: {{item.name}}</h2>
+{% if login_session['user_id'] == item.user_id %}
+<form method="POST" action="{{ url_for('editItem', category_name=category.name, item_id=item.id) }}">
+    <table>
+        <tr>
+            <td>Item Name: </td>
+            <td><input type="text" size="50" name="ItemName" value="{{ item.name }}"></td>
+        </tr>
+        <tr>
+            <td>Item Description: </td>
+            <td><textarea rows="6" cols="60" name="ItemDescription">{{ item.description }}</textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Edit Item">
+                <input type="reset" value="Start Over">
+                <a href="{{ url_for('showItem', category_name=category.name, item_id=item.id) }}">Cancel</a>
+            </td>
+        </tr>
+    </table>
+</form>
+{% else %}
+<h2>{{ item.name }}</h2>
+<blockquote>{{ item.description }}</blockquote>
+{% endif %}
+
+{% endblock %}

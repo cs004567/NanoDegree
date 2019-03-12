@@ -1,0 +1,32 @@
+{% extends "site.html" %}
+{% block content %}
+{% include "header.html" %}
+<br>
+<h2>{{ category.name }}</h2>
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+{% if 'username' in login_session %}
+<p><a href="{{ url_for('addItem', category_name=category.name) }}">Add a New Item</a></p>
+{% endif %}
+
+<ul>
+    {% for item in itemList %}
+    <li><a href="{{ url_for('showItem', category_name=category.name, item_id=item.id) }}">{{ item.name }}</a></li>
+    {% endfor %}
+</ul>
+<br>
+<ul>
+    <li><a href="{{ url_for('jsonCatagoryItemsDump', category_name=category.name) }}" style="font-size: smaller;font-style:italic;">Show Data</a></li>
+</ul>
+{% endblock %}

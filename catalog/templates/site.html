@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Sports Catalog - Udacity Project</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='w3.css') }}">
+</head>
+
+<body>
+	<!-- Navbar (sit on top) -->
+	<div class="w3-top">
+		<div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+			<a href="{{ url_for('showHome') }}" class="w3-bar-item w3-button">Home</a>
+			<div class="w3-right">
+				{% if login_session and 'username' in login_session %}
+				<a href="{{ url_for('gdisconnect') }}" class="w3-bar-item w3-button">Logout</a>
+				{% else %}
+				<a href="{{ url_for('showLogin') }}" class="w3-bar-item w3-button">Login</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<!-- Header -->
+	<header class="w3-display-container w3-content w3-wide" style="max-width:1600px;min-width:500px;height:60px;"
+		id="home">
+	</header>
+		<div class="container">
+			{% block content %}
+			{% endblock %}
+		</div>
+	</body>
+</html>

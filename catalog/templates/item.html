@@ -1,0 +1,35 @@
+{% extends "site.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+
+<h2>{{ item.name }}</h2>
+<blockquote>{{ item.description }}</blockquote><br>
+{% if login_session['user_id'] == item.user_id %}
+<table>
+    <tr>
+        <td style="padding: 4px;"><a href="{{ url_for('editItem', category_name=category.name, item_id=item.id) }}">Edit Item</a></td>
+        <td style="padding: 4px;"><a href="{{ url_for('deleteItem', category_name=category.name, item_id=item.id) }}">Delete Item</a></td>
+    </tr>
+</table>
+
+
+{% endif %}
+<br>
+<ul>
+    <li><a href="{{ url_for('jsonItem', category_name=category.name, item_id=item.id) }}"
+            style="font-size: smaller;font-style:italic;">Show Data</a></li>
+</ul>
+{% endblock %}

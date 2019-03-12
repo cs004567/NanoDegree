@@ -1,0 +1,3 @@
+{% if login_session and 'username' in login_session %}
+<h3>Hello {{ login_session['username'] }}</h3>
+{% endif %}

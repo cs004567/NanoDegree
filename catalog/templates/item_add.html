@@ -1,0 +1,40 @@
+{% extends "site.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+<h3>Add a new item to: {{category.name}}</h3>
+
+<form method="POST" action="{{ url_for('addItem', category_name=category.name) }}">
+    <table>
+        <tr>
+            <td>Item Name: </td>
+            <td><input type="text" size="50" name="ItemName"></td>
+        </tr>
+        <tr>
+            <td>Item Description: </td>
+            <td><textarea rows="6" cols="60" name="ItemDescription"></textarea></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" value="Add Item"> 
+                <input type="reset" value="Start Over"> 
+                <a href="{{ url_for('showItems', category_name=category.name) }}">Cancel</a>
+            </td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
