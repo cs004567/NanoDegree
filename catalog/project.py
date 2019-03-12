@@ -38,6 +38,7 @@ APP_NAME = "School Catalog App"
 
 ##################
 # Begin Auth Code
+# This code is copied from the course code with minor alterations.
 # Setup a session state so we can verify the info is from us.
 @app.route('/login')
 def showLogin():
@@ -166,6 +167,7 @@ def gdisconnect():
 
 
 # Define local user mgmt functions
+# This code is copied from the course code with minor alterations.
 def createUser(login_session):
     """Function - User Mgmt - Accept login session object and query DB for
     User ID based on session email value."""
