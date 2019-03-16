@@ -38,7 +38,6 @@ APP_NAME = "School Catalog App"
 
 ##################
 # Begin Auth Code
-# This code is copied from the course code with minor alterations.
 # Setup a session state so we can verify the info is from us.
 @app.route('/login')
 def showLogin():
@@ -94,7 +93,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print "Token's client ID does not match app's."
+        # print "Token's client ID does not match app's."
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -167,7 +166,6 @@ def gdisconnect():
 
 
 # Define local user mgmt functions
-# This code is copied from the course code with minor alterations.
 def createUser(login_session):
     """Function - User Mgmt - Accept login session object and query DB for
     User ID based on session email value."""
@@ -230,14 +228,23 @@ def addItem(category_name):
         session.query(CatalogCategory).filter_by(name=category_name).first()
     if 'user_id' in login_session:
         if request.method == 'POST':
-            newItem = CatalogItem(name=request.form['ItemName'],
-                                  description=request.form['ItemDescription'],
-                                  category_id=category.id,
-                                  user_id=login_session['user_id'])
-            session.add(newItem)
-            session.commit()
-            flash('New Item Added: %s' % newItem.name)
-            return redirect(url_for('showItems', category_name=category.name))
+            if request.form['ItemName'] and request.form['ItemDescription']:
+                newItem = \
+                    CatalogItem(name=request.form['ItemName'],
+                                description=request.form['ItemDescription'],
+                                category_id=category.id,
+                                user_id=login_session['user_id'])
+                session.add(newItem)
+                session.commit()
+                flash('New Item Added: %s' % newItem.name)
+                return redirect(url_for('showItems',
+                                        category_name=category.name))
+            else:
+                flash('Error adding new item.  Please provide a name \
+                and a description.')
+                return render_template('item_add.html',
+                                       login_session=login_session,
+                                       category=category)
         else:
             return render_template('item_add.html',
                                    login_session=login_session,
@@ -270,15 +277,23 @@ def editItem(category_name, item_id):
     item = session.query(CatalogItem).filter_by(id=item_id).first()
     if item.user_id == login_session['user_id']:
         if request.method == 'POST':
-            if request.form['ItemName']:
-                item.name = request.form['ItemName']
-            if request.form['ItemDescription']:
-                item.description = request.form['ItemDescription']
-            session.add(item)
-            session.commit
-            flash('%s has been updated.' % item.name)
-            return redirect(url_for('showItem', category_name=category.name,
-                                    item_id=item_id))
+            if request.form['ItemName'] and request.form['ItemDescription']:
+                if request.form['ItemName']:
+                    item.name = request.form['ItemName']
+                if request.form['ItemDescription']:
+                    item.description = request.form['ItemDescription']
+                session.add(item)
+                session.commit
+                flash('%s has been updated.' % item.name)
+                return redirect(url_for('showItem',
+                                        category_name=category.name,
+                                        item_id=item_id))
+            else:
+                flash('Unable to edit item.  Please provide a name \
+                    and description.')
+                return render_template('item_edit.html',
+                                       login_session=login_session,
+                                       category=category, item=item)
         else:
             return render_template('item_edit.html',
                                    login_session=login_session,
