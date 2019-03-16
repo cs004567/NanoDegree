@@ -20,11 +20,11 @@
     <table>
         <tr>
             <td>Item Name: </td>
-            <td><input type="text" size="50" name="ItemName" value="{{ item.name }}"></td>
+            <td><input type="text" size="50" name="ItemName" value="{{ item.name }}" required="required"></td>
         </tr>
         <tr>
             <td>Item Description: </td>
-            <td><textarea rows="6" cols="60" name="ItemDescription">{{ item.description }}</textarea></td>
+            <td><textarea rows="6" cols="60" name="ItemDescription" required="required">{{ item.description }}</textarea></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
